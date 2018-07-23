@@ -1,16 +1,22 @@
-import {Component} from "@angular/core";
-import {ControlValueAccessor} from "@angular/forms";
+import {Component, forwardRef} from "@angular/core";
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 
 @Component({
-  selector: 'app-control',
+  selector: 'app-proxy',
   template: `
-      <div style="border: 1px solid red;">
-        {{ innerModel }}
-        <button (click)="onClick()">Change model</button>
+      <div style="border: 1px solid blue;">
+        <app-control [ngModel]="innerModel" (ngModelChange)="onModelChange($event)"></app-control>
       </div>
-  `
+  `,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ProxyComponent),
+      multi: true
+    }
+  ]
 })
-export class ControlComponent implements ControlValueAccessor {
+export class ProxyComponent implements ControlValueAccessor {
   _onChange;
   _onTouched;
   innerModel;
@@ -27,7 +33,7 @@ export class ControlComponent implements ControlValueAccessor {
     this._onTouched = fn;
   }
 
-  onClick() {
-    this._onChange(Math.random());
+  onModelChange(newModel) {
+    this._onChange(newModel);
   }
 }

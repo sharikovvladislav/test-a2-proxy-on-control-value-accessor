@@ -1,8 +1,11 @@
 import {NgModule} from "@angular/core";
-import {ControlComponent} from "./control.component";
+import {ProxyComponent} from "./proxy.component";
+import {ControlModule} from "../control/control.module";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
-  declarations: [ ControlComponent ],
-  exports: [ ControlComponent ]
+  imports: [ ControlModule, FormsModule ],
+  declarations: [ ProxyComponent ],
+  exports: [ ProxyComponent ]
 })
-export class ControlModule {}
+export class ProxyModule {}
